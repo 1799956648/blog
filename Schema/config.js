@@ -1,6 +1,7 @@
+// 负责连接数据库
 const mongoose = require('mongoose');
 
-const db = mongoose.createConnection('mongodb://localhost:27017/blogProject', {useNewUrlParser: true})
+const db = mongoose.createConnection('mongodb://localhost:27017/blogProject', { useNewUrlParser: true })
 
 // 监听状态
 db.on('err', () => {

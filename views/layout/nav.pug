@@ -17,20 +17,20 @@
             a(href="/") 关于博主
         //- 用户登录按钮
         ul.layui-nav.blog-user
-          //- if session && !session.isNew
-          //- li.layui-nav-item
-          //-   a(href=session.role > 1 ? "/admin/user": "/admin/article") 个人中心
-          //-     //- span.layui-badge-dot
-          //- li.layui-nav-item
-          //-   a(href="")
-          //-     //- 用户测试头像
-          //-     img(src=session.avatar).layui-nav-img
-          //-     span= session.username
-          //-   dl.layui-nav-child
-          //-     dd
-          //-       a(href="/user/logout") 退了
-          //- else
-          li.layui-nav-item
-            a(href="/user/login") 登入
-          li.layui-nav-item
-            a(href="/user/reg") 注册
+          if session && !session.isNew
+            li.layui-nav-item
+              a(href=session.role > 1 ? "/admin/user": "/admin/article") 个人中心
+                //- span.layui-badge-dot
+            li.layui-nav-item
+              a(href="")
+                //- 用户测试头像
+                img(src=session.avatar).layui-nav-img
+                span= session.username
+              dl.layui-nav-child
+                dd
+                  a(href="/user/logout") 退了
+          else
+            li.layui-nav-item
+              a(href="/user/login") 登入
+            li.layui-nav-item
+              a(href="/user/reg") 注册

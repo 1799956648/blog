@@ -3,9 +3,19 @@ const views = require('koa-views');
 const static = require('koa-static');
 const logger = require('koa-logger');
 const body = require('koa-body');
-const router = require('./routers/router')
+const router = require('./routers/router');
 const { join } = require('path');
+const session = require('koa-session');
 
+// 对session的配置对象
+const CONFIG = {
+    key: 'Sid', // cookies 密钥
+    maxAge: 36e5, // 过期时间
+    overwrite: false, // 不覆盖
+    httpOnly: true, // 不让前端访问
+    signed: true, // 对session签名
+    rolling: true // 每操作一次，就在当前的时间往后延长 过期时间(maxAge) 的时间
+}
 
 // 生成koa实例
 const app = new Koa();
@@ -23,6 +33,12 @@ app.use(static(join(__dirname, "public")));
 app.use(views(join(__dirname, "views"), {
     extension: "pug"
 }))
+
+// 对session的签名
+app.keys = ['黄楚鑫是个大帅比']
+
+// 注册session
+app.use(session(CONFIG, app))
 
 // 启动路由
 app.use(router.routes());
