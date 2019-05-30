@@ -5,7 +5,7 @@ const { db } = require('../Schema/config');
 // 获取userSchema
 const UserSchema = require('../Schema/userSchema');
 
-// 创建集合
+// 创建用户集合
 const User = db.model('users', UserSchema);
 
 // 导出用户集合的表

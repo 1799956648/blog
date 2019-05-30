@@ -10,12 +10,7 @@ const article = require('../control/article');
 const router = new Router();
 
 // 渲染首页，首页只能通过get方式访问
-router.get('/', user.keepLog, async (ctx, next) => {
-    await ctx.render('index', {
-        title: '博客实战页面',
-        session: ctx.session
-    });
-})
+router.get('/', user.keepLog, article.getList)
 
 // 主要用来处理 用户登录 用户注册   /user/reg 或者 /user/login
 router.get(/^\/user\/(?=reg|login)/, async (ctx, next) => {
@@ -40,6 +35,9 @@ router.get('/article', article.addPage);
 
 // 文章发表页面，确定用户的登录状态
 router.post('/article', user.keepLog, article.add);
+
+// 文章分页,采用动态路由
+router.get('/page/:id', article.getList);
 
 // 导入路由
 module.exports = router;

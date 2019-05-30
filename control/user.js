@@ -107,7 +107,7 @@ exports.login = async (ctx) => {
             ctx.cookies.set('username', username, {
                 domian: 'localhost', // cookies域名
                 path: '/', // 当前路径下生效
-                maxAge: 36e5, // cookies的过期时间
+                maxAge: 36e5, // cookies的过期时间，1天
                 httpOnly: true, // 不让前端访问这条cookies
                 overWrite: false, // 不能覆盖
             })
@@ -116,7 +116,7 @@ exports.login = async (ctx) => {
             ctx.cookies.set('uid', data[0]._id, {
                 domian: 'localhost', // cookies域名
                 path: '/', // 当前路径下生效
-                maxAge: 36e5, // cookies的过期时间
+                maxAge: 36e5, // cookies的过期时间，1天
                 httpOnly: true, // 不让前端访问这条cookies
                 overWrite: false, // 不能覆盖
             })
@@ -124,7 +124,8 @@ exports.login = async (ctx) => {
             // 把用户的数据存到后台的session，便于与前端的cookie对比，检测用户的登录状态
             ctx.session = {
                 username,
-                uid: data[0]._id
+                uid: data[0]._id, // 必须存用户的id
+                avatar: data[0].avatar // 保存头像路径
             }
 
             // 找得到用户名，密码比对正确
