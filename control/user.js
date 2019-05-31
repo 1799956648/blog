@@ -174,6 +174,6 @@ exports.logout = async (ctx) => {
         maxAge: 0
     })
 
-    // 后台的重定向
+    // 后台的重定向到首页
     ctx.redirect('/');
 }

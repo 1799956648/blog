@@ -6,6 +6,9 @@ const user = require('../control/user');
 // 获取文章中间件控制函数
 const article = require('../control/article');
 
+// 获取评论中间件控制函数
+const comment = require('../control/comment');
+
 // 实例router
 const router = new Router();
 
@@ -38,6 +41,12 @@ router.post('/article', user.keepLog, article.add);
 
 // 文章分页,采用动态路由
 router.get('/page/:id', article.getList);
+
+// 文章详情页
+router.get('/article/:id', user.keepLog, article.detail);
+
+// 评论发表
+router.post('/comment', user.keepLog, comment.save);
 
 // 导入路由
 module.exports = router;

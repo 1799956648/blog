@@ -5,6 +5,9 @@ const Article = require('../Schema/article');
 const User = require('../Schema/user');
 const UserSchema = require('../Schema/userSchema');
 
+// 拿到评论的集合
+const Comment = require('../Schema/comment');
+
 // 返回文章发表页
 exports.addPage = async (ctx) => {
     await ctx.render('add-article', {
@@ -17,7 +20,7 @@ exports.addPage = async (ctx) => {
 // 文章发表页面
 exports.add = async (ctx) => {
     // 用户没登录{}，不需要去查询数据库
-    if (ctx.session.isNew) { 
+    if (ctx.session.isNew) {
         return ctx.body = {
             status: 0,
             msg: '用户未登录，请登录'
@@ -41,20 +44,21 @@ exports.add = async (ctx) => {
             resolve(data);
         })
     })
-    .then(data => {
-        return ctx.body = {
-            msg: '发表成功',
-            status: 1
-        }
-    })
-    .catch(err => {
-        return ctx.body = {
-            msg: '发表失败',
-            status: 0
-        }
-    })
+        .then(data => {
+            return ctx.body = {
+                msg: '发表成功',
+                status: 1
+            }
+        })
+        .catch(err => {
+            return ctx.body = {
+                msg: '发表失败',
+                status: 0
+            }
+        })
 }
 
+// 获取文章列表
 exports.getList = async (ctx) => {
 
     // 取动态路由里面的参数,没传默认显示第一页
@@ -81,6 +85,40 @@ exports.getList = async (ctx) => {
         session: ctx.session,
         artList, // 文章查询列表，是一个数组,数组中每一个对象才是每条文章的信息
         maxNum: 10
+    })
+}
+
+// 文章详情页
+exports.detail = async (ctx) => {
+    // 拿到文章详情页动态路由参数
+    const _id = ctx.params.id;
+
+    // 查找文章本身数据
+    const article = await Article
+        .findById(_id) // 通过ID查询，因为id是唯一的
+        .populate({ // 连表查询
+            path: 'author',
+            select: 'username' // 去用户的表里提取username
+        })
+
+    const comment = await Comment
+        .find({ 'article': _id })
+        .sort('-created')
+        .populate({
+            path: 'from',
+            select: 'username avatar'
+        })
+        .then(data => data)
+        .catch(err => {
+            console.log(err)
+        })
+
+    // 渲染文章详情页
+    await ctx.render('article', {
+        titie: '文章详情页',
+        session: ctx.session, // 确认用户的状态
+        article, // 文章数据
+        comment // 评论数据
     })
 }
 

@@ -32,7 +32,7 @@ block contents
           div.other-info.text-center
             span= article.author.username
             span &nbsp;&nbsp;发表于：
-            span= article.created.toLocaleString()
+            span= article.createdAt.toLocaleString()
             span &nbsp;分类：
             span= article.tips
           //- 文章内容
@@ -65,8 +65,6 @@ block contents
 
       //- 右侧公告
       include ./layout/right_tag
-
-
 
 
 block scripts
